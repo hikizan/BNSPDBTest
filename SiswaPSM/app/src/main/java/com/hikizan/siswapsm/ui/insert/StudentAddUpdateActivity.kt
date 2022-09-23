@@ -2,21 +2,25 @@ package com.hikizan.siswapsm.ui.insert
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.hikizan.siswapsm.R
 import com.hikizan.siswapsm.database.Student
 import com.hikizan.siswapsm.databinding.ActivityStudentAddUpdateBinding
 import com.hikizan.siswapsm.helper.DataHelper
 import com.hikizan.siswapsm.helper.ViewModelFactory
+import java.io.ByteArrayOutputStream
+
 
 class StudentAddUpdateActivity : AppCompatActivity() {
 
@@ -29,7 +33,7 @@ class StudentAddUpdateActivity : AppCompatActivity() {
 
     //for take image
     private lateinit var imagePath: Uri
-    private lateinit var imageToStore: Bitmap
+    private var imageToStore: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +60,7 @@ class StudentAddUpdateActivity : AppCompatActivity() {
                     binding.edtName.setText(student.name)
                     binding.edtAddress.setText(student.address)
                     binding.edtPhoneNumber.setText(student.phoneNumber.toString())
+                    //binding.imgStudent.setImageBitmap(stringToBitMap(student.image))
                     if (student.isMale == true) {
                         binding.rbMale.isChecked = true
                         binding.rbFemale.isChecked = false
@@ -96,12 +101,17 @@ class StudentAddUpdateActivity : AppCompatActivity() {
                 }
                 phone.isEmpty() -> {
                     binding.edtPhoneNumber.error = getString(R.string.empty)
-                } else -> {
+                }
+                imageToStore == null -> {
+                    Toast.makeText(this, "Input image!", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
                     student?.let { student ->
                         student.name = name
                         student.address = address
                         student.phoneNumber = phone
                         student.isMale = isMale
+                        student.image = bitMapToString(imageToStore!!)
                     }
                     if (isEdit) {
                         viewModel.update(student as Student)
@@ -206,6 +216,23 @@ class StudentAddUpdateActivity : AppCompatActivity() {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    fun stringToBitMap(encodedString: String?): Bitmap? {
+        return try {
+            val encodeByte: ByteArray = Base64.decode(encodedString, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
+        } catch (e: java.lang.Exception) {
+            e.message
+            null
+        }
+    }
+
+    fun bitMapToString(bitmap: Bitmap): String? {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val b: ByteArray = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
     }
 
     companion object {
