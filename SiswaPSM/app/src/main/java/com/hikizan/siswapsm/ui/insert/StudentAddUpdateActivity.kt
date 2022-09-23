@@ -1,7 +1,12 @@
 package com.hikizan.siswapsm.ui.insert
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -22,6 +27,9 @@ class StudentAddUpdateActivity : AppCompatActivity() {
     private var student: Student? = null
     private var isMale: Boolean = false
 
+    //for take image
+    private lateinit var imagePath: Uri
+    private lateinit var imageToStore: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +117,11 @@ class StudentAddUpdateActivity : AppCompatActivity() {
                 }
             }
         }
+
+        //for take image
+        binding.imgStudent.setOnClickListener {
+            choseImage()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -168,9 +181,39 @@ class StudentAddUpdateActivity : AppCompatActivity() {
         return ViewModelProvider(activity, factory)[StudentAddUpdateViewModel::class.java]
     }
 
+    //for take image
+    private fun choseImage() {
+        try {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+    //for take image
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        try {
+            super.onActivityResult(requestCode, resultCode, data)
+            if (requestCode==PICK_IMAGE_REQUEST && resultCode==RESULT_OK && data?.data !=null) {
+                imagePath = data.data!!
+                imageToStore = MediaStore.Images.Media.getBitmap(contentResolver, imagePath)
+                binding.imgStudent.setImageBitmap(imageToStore)
+                Log.d("getDataCamera", "dataGambar = $imageToStore")
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
     companion object {
         const val EXTRA_STUDENT = "extra_student"
         const val ALERT_DIALOG_CLOSE = 10
         const val ALERT_DIALOG_DELETE = 20
+
+        //for take image
+        const val PICK_IMAGE_REQUEST = 99
     }
 }

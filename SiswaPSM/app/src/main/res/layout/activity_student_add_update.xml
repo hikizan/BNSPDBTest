@@ -8,6 +8,17 @@
     android:padding="16dp"
     tools:context=".ui.insert.StudentAddUpdateActivity">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_student"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:civ_circle_background_color="@android:color/darker_gray"
+        app:civ_border_width="2dp"
+        app:civ_border_color="?attr/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:src="@android:color/darker_gray"
+        android:layout_marginBottom="16dp"/>
+
     <com.google.android.material.textfield.TextInputLayout
         style="@style/boxRounded"
         android:layout_width="match_parent"
