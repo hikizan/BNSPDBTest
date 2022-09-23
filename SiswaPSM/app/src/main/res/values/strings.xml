@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">SiswaPSM</string>
+    <string name="date">Date</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="phone">PhoneNumber</string>
+    <string name="jk">JK</string>
+    <string name="submit">submit</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Batal</string>
+    <string name="message_cancel">Apakah anda ingin membatalkan perubahan pada form?</string>
+    <string name="message_delete">Apakah anda ingin menghapus item ini?</string>
+    <string name="yes">Ya</string>
+    <string name="deleted">Satu item berhasil dihapus</string>
+    <string name="no">Tidak</string>
+    <string name="change">Ubah</string>
+    <string name="update">Update</string>
+    <string name="add">Tambah</string>
+    <string name="save">Simpan</string>
+    <string name="empty">Field can\'t be blank</string>
+    <string name="changed">Satu item berhasil diubah</string>
+    <string name="added">Satu item berhasil ditambahkan</string>
+    <string name="main_title">List Siswa Ekskul PSM</string>
+</resources>
