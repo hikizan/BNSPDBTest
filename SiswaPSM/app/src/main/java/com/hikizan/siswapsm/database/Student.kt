@@ -1,5 +1,6 @@
 package com.hikizan.siswapsm.database
 
+import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -26,6 +27,9 @@ data class Student(
     var phoneNumber: String? = null,
 
     @ColumnInfo(name = "isMale")
-    var isMale: Boolean? = false
+    var isMale: Boolean? = false,
+
+    @ColumnInfo(name = "image")
+    var image: String? = null
 
 ) : Parcelable
